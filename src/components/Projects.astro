@@ -1,0 +1,38 @@
+---
+import { projects } from '../data/site';
+const initial = 'dev';
+---
+<section class="blk" id="projets" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><div class="mono">Projets</div><h2>Nos réalisations<span class="sq"></span></h2></div>
+      <p>Plateformes, apps, sites et identités livrés pour des clients en Arabie saoudite, en Australie, au Canada, aux États-Unis et en France.</p>
+    </div>
+    <div class="filters" role="group" aria-label="Filtrer les projets">
+      <button type="button" data-f="dev" aria-pressed="true">Développement</button>
+      <button type="button" data-f="branding" aria-pressed="false">Branding</button>
+    </div>
+
+    <div class="dgrid">
+      {projects.map((p) => (
+        <article class="dshot" data-cat={p.cat} hidden={p.cat !== initial}>
+          <div class="d-media"><img src={`/img/${p.img}`} alt={`Aperçu du projet ${p.name}`} loading={p.eager ? 'eager' : 'lazy'} width={p.w} height={p.h} /><span class="d-ov"><b>{p.name}</b><small>{p.sub}</small></span></div>
+          <div class="d-meta">
+            <div class="d-txt"><b>{p.name}</b><small>{p.sub}</small></div>
+            {p.url && <a class="d-link" href={p.url} target="_blank" rel="noopener" aria-label={`Voir ${p.name} en ligne`}>↗</a>}
+            {p.concept && <span class="d-tag">Concept</span>}
+          </div>
+        </article>
+      ))}
+    </div>
+    <p class="work-note">Projets réalisés par notre équipe. Les identités marquées « Concept » sont des créations du studio.</p>
+  </div>
+</section>
+
+<script>
+  // Project filter (Développement / Branding)
+  (function(){
+    const btns=document.querySelectorAll<HTMLButtonElement>('.filters button'),cards=document.querySelectorAll<HTMLElement>('.dshot');
+    btns.forEach(b=>b.addEventListener('click',()=>{btns.forEach(x=>x.setAttribute('aria-pressed',String(x===b)));const f=b.dataset.f;cards.forEach(c=>{c.hidden=!(f==='all'||(c.dataset.cat||'').split(' ').includes(f||''));});}));
+  })();
+</script>

@@ -1,0 +1,24 @@
+<section class="showreel" aria-labelledby="sr-title">
+  <div class="sr-full">
+    <video id="sr-v" src="/img/reel-wide.mp4" poster="/img/reel-wide-poster.webp" muted loop playsinline preload="metadata" aria-label="Vidéo de présentation NexaForge Pixel"></video>
+    <div class="sr-shade"></div>
+    <button type="button" class="sr-play" id="sr-play" aria-label="Lire la vidéo"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button>
+    <div class="sr-cap wrap">
+      <div><span class="mono sr-k">Showreel · 25 s</span><h2 id="sr-title">NexaForge Pixel en 25 secondes<span class="sq"></span></h2></div>
+      <button type="button" class="btn btn-glass sr-snd" id="sr-sound" aria-pressed="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H2v6h4l5 4z"/><path class="w" d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg><span>Activer le son</span></button>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Showreel: autoplay when visible, play button fallback, sound toggle
+  (function(){
+    const v=document.getElementById('sr-v') as HTMLVideoElement|null,pb=document.getElementById('sr-play') as HTMLButtonElement,sb=document.getElementById('sr-sound') as HTMLButtonElement;if(!v)return;
+    const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const play=()=>{const p=v.play();if(p&&p.then)p.then(()=>{pb.hidden=true}).catch(()=>{pb.hidden=false});else pb.hidden=true;};
+    pb.addEventListener('click',play);v.addEventListener('pause',()=>{pb.hidden=false});v.addEventListener('play',()=>{pb.hidden=true});
+    v.addEventListener('click',()=>{v.paused?play():v.pause()});
+    sb.addEventListener('click',()=>{v.muted=!v.muted;sb.setAttribute('aria-pressed',String(!v.muted));sb.querySelector('span')!.textContent=v.muted?'Activer le son':'Couper le son';if(!v.muted&&v.paused)play();});
+    if(!reduce&&'IntersectionObserver' in window){new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){if(v.paused)play();}else if(!v.paused)v.pause();}),{threshold:.35}).observe(v);}
+  })();
+</script>

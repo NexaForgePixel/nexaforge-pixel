@@ -1,0 +1,16 @@
+---
+import { steps } from '../data/site';
+---
+<section class="blk" id="methode" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><div class="mono">Méthode</div><h2>De l'idée au lancement<span class="sq"></span></h2></div>
+      <p>Quatre étapes claires. Vous validez chaque étape avant qu'on passe à la suivante.</p>
+    </div>
+    <div class="proc">
+      {steps.map((s) => (
+        <div class="step"><span class="node">{s.n}</span><h3>{s.title}</h3><p>{s.text}</p><small>{s.when}</small></div>
+      ))}
+    </div>
+  </div>
+</section>

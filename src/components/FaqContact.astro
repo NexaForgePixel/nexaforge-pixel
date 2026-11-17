@@ -1,0 +1,53 @@
+---
+import { faq, projectTypes, WHATSAPP_NUMBER, PHONE_DISPLAY } from '../data/site';
+---
+<section class="blk" id="faq" style="padding-top:0">
+  <div class="wrap two">
+    <div>
+      <div class="sec-head" style="margin-bottom:24px"><div><div class="mono">FAQ</div><h2>Vos questions<span class="sq"></span></h2></div></div>
+      {faq.map((item) => (
+        <details open={item.open}><summary>{item.q}<i aria-hidden="true">+</i></summary><p>{item.a}</p></details>
+      ))}
+    </div>
+
+    <form class="quote" id="contact" novalidate data-wa={WHATSAPP_NUMBER}>
+      <span class="mono">Devis gratuit · réponse rapide</span>
+      <h3>Parlez-nous de votre projet<span class="sq"></span></h3>
+      <p class="sub">On prépare votre message WhatsApp, vous n'avez plus qu'à l'envoyer.</p>
+      <div class="r2">
+        <label class="f" for="f-name">Votre nom<input id="f-name" autocomplete="name" placeholder="Amine B." /></label>
+        <label class="f" for="f-biz">Votre activité<input id="f-biz" placeholder="Restaurant, boutique, entreprise…" /></label>
+      </div>
+      <fieldset class="f" style="border:0;margin:0;padding:0"><legend style="margin-bottom:8px;padding:0">Type de projet</legend>
+        <div class="seg">
+          {projectTypes.map((t, i) => (
+            <label><input type="radio" name="type" value={t.value} checked={i === 0} /><span>{t.label}</span></label>
+          ))}
+        </div>
+      </fieldset>
+      <label class="f" for="f-wilaya">Wilaya<input id="f-wilaya" placeholder="Oran" /></label>
+      <label class="f" for="f-msg">Votre message<textarea id="f-msg" placeholder="Votre projet, vos délais, vos questions…"></textarea></label>
+      <a class="btn btn-hot" id="wa-link" href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noopener"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"/></svg>Envoyer sur WhatsApp</a>
+      <div class="copyrow"><span>{PHONE_DISPLAY}</span><button type="button" id="copy">Copier</button><span id="copied" aria-live="polite"></span></div>
+    </form>
+  </div>
+</section>
+
+<script>
+  // Builds the WhatsApp message from the form fields
+  (function(){
+    const $=(id:string)=>document.getElementById(id) as HTMLInputElement;
+    const link=document.getElementById('wa-link') as HTMLAnchorElement,form=document.getElementById('contact') as HTMLFormElement;
+    if(!link||!form)return;
+    const NUM=form.dataset.wa||'';
+    function build(){
+      const t=(document.querySelector<HTMLInputElement>('input[name="type"]:checked')||{value:''}).value||'Développement';
+      const L=['Bonjour NexaForge Pixel 👋','Je souhaite un devis pour : '+t+'.'];
+      [['f-name','Nom'],['f-biz','Activité'],['f-wilaya','Wilaya'],['f-msg','Message']].forEach(([id,l])=>{const v=$(id).value.trim();if(v)L.push(l+' : '+v);});
+      link.href='https://wa.me/'+NUM+'?text='+encodeURIComponent(L.join('\n'));
+    }
+    form.addEventListener('input',build);form.addEventListener('change',build);form.addEventListener('submit',e=>e.preventDefault());
+    $('copy').addEventListener('click',()=>{const done=(m:string)=>{$('copied').textContent=m;setTimeout(()=>$('copied').textContent='',2200);};try{navigator.clipboard.writeText('+'+NUM).then(()=>done('Copié'),()=>done('Sélectionnez le numéro'));}catch(e){done('Sélectionnez le numéro');}});
+    build();
+  })();
+</script>
