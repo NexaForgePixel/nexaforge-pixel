@@ -820,7 +820,7 @@ dialog#case::backdrop{background:rgba(5,5,7,.78);backdrop-filter:blur(8px);-webk
 .srow:hover h4,.srow:focus-visible h4{transform:translateX(12px)}
 .srow:hover .n,.srow:hover h4,.srow:hover p,.srow:hover .tg,.srow:focus-visible h4,.srow:focus-visible p{color:#111215}
 .srow:hover .go{background:#111215;color:var(--ember);border-color:#111215;transform:rotate(-45deg)}
-@media (max-width:760px){.srow{grid-template-columns:40px minmax(0,1fr) 44px;gap:14px;padding:22px 4px}.srow p{grid-column:2/3}.srow .go{width:44px;height:44px;grid-row:1}}
+@media (max-width:760px){.srow{grid-template-columns:40px minmax(0,1fr) 44px;gap:10px 14px;padding:22px 4px}.srow .n{grid-column:1;grid-row:1}.srow h4{grid-column:2;grid-row:1}.srow>div{grid-column:2/-1;grid-row:2}.srow .go{grid-column:3;grid-row:1;width:44px;height:44px}}
 
 /* projects: one homogeneous card style */
 .pgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
